@@ -78,8 +78,13 @@ public class FatManManager : SingleType<AnimateManager>
         {
             case FatManState.PlayingGame:
                 m_lastTime = Time.time;
-                currentState = FatManState.PlayingGame;
 
+                //if (AnimateManager.instant.HasFood() == null)
+                //{
+                //    currentState = FatManState.PlayingGame;
+
+              
+                //}
                 //做判断
                 break;
             case FatManState.Eating:

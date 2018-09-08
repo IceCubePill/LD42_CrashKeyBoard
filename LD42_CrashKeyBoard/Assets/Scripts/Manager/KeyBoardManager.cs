@@ -26,15 +26,7 @@ public class KeyBoardManager : SingleType<KeyBoardManager>
         public GameObject Effect;
         private bool m_isLocking = false;
 
-        public bool isLocking
-        {
-            get { return m_isLocking; }
-            set
-            {
-                m_isLocking = value;
-                Effect.SetActive(!value);
-            }
-        }
+        
     }
 
     public Dictionary<int, KeyGroup> keyGroupsDic=new Dictionary<int, KeyGroup>();
@@ -44,7 +36,33 @@ public class KeyBoardManager : SingleType<KeyBoardManager>
     public Material NormalKey;
 
     public Material PollutedKey;
-    void ClearKeyBoard()
+
+    public void ShowKeyGroup()
+    {
+        
+        foreach (KeyGroup keyGroup in keyGroups)
+        {
+            
+            foreach (var key in keyGroup.keys)
+            {
+                if (key.KesState==Key.KeyState.Normal)
+                {
+                    keyGroup.Effect.SetActive(true);
+                    break;
+                }
+            }
+        }
+
+    }
+
+    public void CloseKeyGroup()
+    {
+        foreach (var keyGroup in keyGroups)
+        {
+            keyGroup.Effect.SetActive(false);
+        }
+    }
+   public  void ClearKeyBoard()
     {
         foreach (var keyGroup in keyGroups)
         {
@@ -52,7 +70,32 @@ public class KeyBoardManager : SingleType<KeyBoardManager>
             {
                 key.transform.GetComponentInChildren<MeshRenderer>().material= NormalKey;
             }
-            keyGroup.isLocking = true;
+           
+        }
+    }
+
+    public void CheckKeyBoard()
+    {
+        foreach (var keyGroup in keyGroups)
+        {
+            foreach (var key in keyGroup.keys)
+            {
+                if (key.KesState==Key.KeyState.Normal)
+                {
+                    return;
+                }
+            }
+        }
+
+        AnimateManager.instant.anima.SetBool("HasAngery",true);
+    }
+
+    public void DistroidGroup(int index)
+    {
+        foreach (var key in keyGroups[index].keys)
+        {
+            key.KesState = Key.KeyState.Polluted;
+            key.GetComponentInChildren<MeshRenderer>().material = PollutedKey;
         }
     }
 	void Start () {
